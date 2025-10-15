@@ -6,6 +6,7 @@
   - [1.4. Example Applications](#14-example-applications)
   - [1.5. DevSecOps](#15-devsecops)
   - [1.6. Build A Application](#16-build-a-application)
+  - [1.7. Learning Materials](#17-learning-materials)
 - [2. References](#2-references)
 
 
@@ -43,6 +44,14 @@
 ## 1.6. Build A Application
 
 [Build A Python Application](./../../build/README.md)
+
+
+## 1.7. Learning Materials
+
+- https://landscape.cncf.io
+- https://www.cncf.io/training/certification/
+- https://www.cncf.io/training/
+- https://owasp.org/www-project-kubernetes-top-ten/
 
 
 # 2. References
