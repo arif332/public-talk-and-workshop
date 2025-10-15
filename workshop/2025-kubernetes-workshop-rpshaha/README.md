@@ -51,6 +51,7 @@
 - https://landscape.cncf.io
 - https://www.cncf.io/training/certification/
 - https://www.cncf.io/training/
+- https://kubernetes.io/
 - https://owasp.org/www-project-kubernetes-top-ten/
 
 
