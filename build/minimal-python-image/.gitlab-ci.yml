@@ -1,0 +1,63 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_IMAGE: "gitlablocal:8080/platform/minimal-python-code"
+  DOCKER_TAG: "$CI_COMMIT_SHORT_SHA"  # Uses git commit hash as tag
+
+# Cache Python dependencies between jobs
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - docker --version
+  - python --version
+
+build-docker:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+    - docker push $DOCKER_IMAGE:$DOCKER_TAG
+  tags:
+    - docker
+  only:
+    - merge_requests
+    - main
+    - master
+
+test:
+  stage: test
+  image: python:3.11-slim
+  script:
+    - pip install -r requirements.txt
+    - python -m pytest tests/  # Assuming you have tests
+  artifacts:
+    reports:
+      junit: test-reports/results.xml
+    paths:
+      - test-reports/
+  only:
+    - merge_requests
+    - main
+    - master
+
+deploy:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "Deploying $DOCKER_IMAGE:$DOCKER_TAG"
+    # Add your deployment commands here, for example:
+    # - kubectl set image deployment/my-app my-app=$DOCKER_IMAGE:$DOCKER_TAG
+  only:
+    - main
+    - master
+  when: manual
